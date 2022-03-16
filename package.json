@@ -5,7 +5,9 @@
   "unity": "2019.1",
   "author": "Michael Christie",
   "description": "Core stuff",
-  "dependencies": {},
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.6"
+  },
   "repository": {
     "type": "git",
     "url": ""
