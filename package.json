@@ -1,0 +1,13 @@
+{
+  "name": "unity.michaelchristie.core",
+  "displayName": "Core",
+  "version": "1.0.0",
+  "unity": "2019.1",
+  "author": "Michael Christie",
+  "description": "Core stuff",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
