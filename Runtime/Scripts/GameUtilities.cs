@@ -14,5 +14,13 @@ namespace MC.Core
 
             public static WaitForSeconds waitForPointFive = new WaitForSeconds(0.5F);
         }
+
+        public static class PlayerPrefs
+        {
+            public static string isSFXMuted = "isSFXMuted";
+            public static string isMusicMuted = "isMusicMuted";
+            public static string SFXVolume = "sfxVolume";
+            public static string MusicVolume = "musicVolume";
+        }
     }
 }
