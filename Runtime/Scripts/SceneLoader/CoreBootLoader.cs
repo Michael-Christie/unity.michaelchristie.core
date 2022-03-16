@@ -67,7 +67,7 @@ namespace MC.Core
             yield return GameUtilities.WaitTimers.waitForPointFive;
 
             //ideally fade between the scenes then delete
-            ShowLoadingScene?.Invoke(true);
+            ShowLoadingScene?.Invoke(false);
             yield return GameUtilities.WaitTimers.waitForPointFive;
             currentAsynList.Clear();
 
