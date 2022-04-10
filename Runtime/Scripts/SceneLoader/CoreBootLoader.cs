@@ -93,7 +93,6 @@ namespace MC.Core
             //Unload the current scene collection
             for (int i = 0; i < sceneCollections[currentCollection].scenes.Length; i++)
             {
-
                 //If the scene is already loaded, don't load it again
                 if (!sceneCollections[_sceneCollection].Contains(sceneCollections[currentCollection].scenes[i]))
                 {

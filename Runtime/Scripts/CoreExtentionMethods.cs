@@ -10,7 +10,7 @@ namespace MC.Core
         {
             for (int i = 0; i < _collection.scenes.Length; i++)
             {
-                if (_collection.scenes[i] == i)
+                if (_collection.scenes[i] == _scene)
                 {
                     return true;
                 }
