@@ -90,6 +90,8 @@ namespace MC.Core
             ShowLoadingScene?.Invoke(true);
             yield return GameUtilities.WaitTimers.waitForPointFive;
 
+            Application.backgroundLoadingPriority = ThreadPriority.High;
+
             //Unload the current scene collection
             for (int i = 0; i < sceneCollections[currentCollection].scenes.Length; i++)
             {
@@ -138,6 +140,8 @@ namespace MC.Core
 
             yield return GameUtilities.WaitTimers.waitForPointFive;
             OnSceneStart();
+
+            Application.backgroundLoadingPriority = ThreadPriority.BelowNormal;
 
             ShowLoadingScene?.Invoke(false);
             yield return GameUtilities.WaitTimers.waitForPointFive;
