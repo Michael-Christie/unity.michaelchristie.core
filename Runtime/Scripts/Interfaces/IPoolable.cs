@@ -10,4 +10,6 @@ public interface IPoolable
 
     //
     void ReturnToPool();
+    void SetPosition(Transform _newParent);
+    void SetPosition(Transform _newParent, Vector3 _position);
 }
