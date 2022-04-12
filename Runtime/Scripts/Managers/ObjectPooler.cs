@@ -33,6 +33,9 @@ public class ObjectPooler : MonoBehaviour
         }
 
         Instance = this;
+        
+        //Doing this here so its creating objects with the scene loading to hide any lag.
+        Create();
     }
 
     private void Create()
