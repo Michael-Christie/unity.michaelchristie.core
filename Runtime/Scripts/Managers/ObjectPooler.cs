@@ -43,6 +43,11 @@ public class ObjectPooler : MonoBehaviour
         List<IPoolable> _creationList = new List<IPoolable>();
         for (int i = 0; i < pooledObjects.Length; i++)
         {
+            if(pooledObjects[i].poolRef == null)
+            {
+                pooledObjects[i].poolRef = pooledObjects[i].prefab.GetComponent<IPoolable>();
+            }
+
             for (int j = 0; j < pooledObjects[i].amountToCreate; j++)
             {
                 _creationList.Add(Instantiate(pooledObjects[i].prefab, transform).GetComponent<IPoolable>());
