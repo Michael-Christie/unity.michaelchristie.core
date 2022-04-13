@@ -40,10 +40,11 @@ public class ObjectPooler : MonoBehaviour
 
     private void Create()
     {
-        List<IPoolable> _creationList = new List<IPoolable>();
+        List<IPoolable> _creationList;
         for (int i = 0; i < pooledObjects.Length; i++)
         {
-            if(pooledObjects[i].poolRef == null)
+            _creationList = new List<IPoolable>();
+            if (pooledObjects[i].poolRef == null)
             {
                 pooledObjects[i].poolRef = pooledObjects[i].prefab.GetComponent<IPoolable>();
             }
@@ -54,7 +55,6 @@ public class ObjectPooler : MonoBehaviour
             }
 
             pooledDictionary.Add(pooledObjects[i].poolRef.PoolID, _creationList);
-            _creationList.Clear();
         }
     }
 
