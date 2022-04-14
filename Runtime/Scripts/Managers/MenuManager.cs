@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             CurrentMenu?.OnEscHit();
         }
@@ -45,16 +46,30 @@ public class MenuManager : MonoBehaviour
     /// Shows a selected menu
     /// </summary>
     /// <param name="_index"></param>
-    public void ShowMenu(int _index)
+    public void ShowMenu(int _index, Action _onShowComplete = null, Action _onHideComplete = null)
     {
         if (menuStack.Count > 0)
         {
-            menuStack.Peek()?.Hide();
+            menuStack.Peek()?.Hide(
+                delegate
+                {
+                    _onHideComplete?.Invoke();
+
+                    MenuBase _otherMenu = allMenus[_index];
+
+                    _otherMenu.Show(_onShowComplete);
+
+                    menuStack.Push(_otherMenu);
+                });
+
+            return;
         }
+
+        _onHideComplete?.Invoke();
 
         MenuBase _newMenu = allMenus[_index];
 
-        _newMenu.Show();
+        _newMenu.Show(_onShowComplete);
 
         menuStack.Push(_newMenu);
     }
@@ -62,14 +77,21 @@ public class MenuManager : MonoBehaviour
     /// <summary>
     /// Hides the current showing menu
     /// </summary>
-    public void HideMenu()
+    public void HideMenu(Action _onHideComplete = null)
     {
         if (menuStack.Count > 0)
         {
-            menuStack.Pop().Hide();
+            menuStack.Pop().Hide(
+                delegate
+                {
+                    _onHideComplete?.Invoke();
+
+                    menuStack.Peek()?.Show(null);
+                });
+            return;
         }
 
-        menuStack.Peek()?.Show();
+        menuStack.Peek()?.Show(null);
     }
 
     /// <summary>
@@ -80,13 +102,13 @@ public class MenuManager : MonoBehaviour
     {
         if (menuStack.Count > 0)
         {
-            menuStack.Pop()?.Hide();
+            menuStack.Pop()?.Hide(null);
 
             menuStack.Clear();
         }
 
         MenuBase _newMenu = allMenus[_index];
-        _newMenu.Show();
+        _newMenu.Show(null);
 
         menuStack.Push(_newMenu);
     }
