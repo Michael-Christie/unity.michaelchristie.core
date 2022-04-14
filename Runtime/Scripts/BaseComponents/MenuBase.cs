@@ -20,9 +20,10 @@ public abstract class MenuBase : MonoBehaviour
 
     public virtual void Show(Action _onShowComplete)
     {
-        if (isInitalized)
+        if (!isInitalized)
         {
             Initalize();
+            isInitalized = true;
         }
 
         onShowComplete += _onShowComplete;
