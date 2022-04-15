@@ -7,16 +7,13 @@ public abstract class MenuBase : MonoBehaviour
 {
     [SerializeField] protected GameObject menuPanel;
 
-    protected Action onShowComplete;
-    protected Action onHideComplete;
+    private Action onShowComplete;
+    private Action onHideComplete;
 
     protected bool isInitalized;
 
     //
     protected abstract void Initalize();
-
-    protected abstract IEnumerator PlayShowAnimation();
-    protected abstract IEnumerator PlayHideAnimation();
 
     public virtual void Show(Action _onShowComplete)
     {
@@ -27,20 +24,16 @@ public abstract class MenuBase : MonoBehaviour
         }
 
         onShowComplete += _onShowComplete;
-
-        menuPanel.SetActive(true);
     }
 
     public virtual void Hide(Action _onHideComplete)
     {
         onHideComplete += _onHideComplete;
-
-        menuPanel.SetActive(false);
     }
 
     public virtual void OnEscHit()
     {
-
+        //Left blank so that a. you don't have to implement it and b. you can override it in some menus but not others.
     }
 
     protected void OnShowComplete()
@@ -53,5 +46,15 @@ public abstract class MenuBase : MonoBehaviour
     {
         onHideComplete?.Invoke();
         onHideComplete = null;
+    }
+
+    protected virtual IEnumerator PlayShowAnimation()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected virtual IEnumerator PlayHideAnimation()
+    {
+        throw new NotImplementedException();
     }
 }
