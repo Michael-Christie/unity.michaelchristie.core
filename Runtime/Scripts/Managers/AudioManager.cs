@@ -57,7 +57,7 @@ namespace MC.Core
             set
             {
                 _sfxVolume = Mathf.Clamp01(value);
-                PlayerPrefs.SetFloat(GameUtilities.PlayerPrefs.SFXVolume, _sfxVolume);
+                PlayerPrefs.SetFloat(GameUtilities.PlayerPrefs.sfxVolume, _sfxVolume);
 
                 OnSFXVolumeChange?.Invoke(_sfxVolume);
             }
@@ -73,7 +73,7 @@ namespace MC.Core
             set
             {
                 _musicVolume = Mathf.Clamp01(value);
-                PlayerPrefs.SetFloat(GameUtilities.PlayerPrefs.MusicVolume, _musicVolume);
+                PlayerPrefs.SetFloat(GameUtilities.PlayerPrefs.musicVolume, _musicVolume);
 
                 OnMusicVolumeChange?.Invoke(_musicVolume);
             }
@@ -89,8 +89,8 @@ namespace MC.Core
         {
             _isSFXMuted = PlayerPrefs.GetInt(GameUtilities.PlayerPrefs.isSFXMuted, 0) == 1;
             _isMusicMuted = PlayerPrefs.GetInt(GameUtilities.PlayerPrefs.isMusicMuted, 0) == 1;
-            _sfxVolume = PlayerPrefs.GetFloat(GameUtilities.PlayerPrefs.SFXVolume, 1);
-            _musicVolume = PlayerPrefs.GetFloat(GameUtilities.PlayerPrefs.MusicVolume, 1);
+            _sfxVolume = PlayerPrefs.GetFloat(GameUtilities.PlayerPrefs.sfxVolume, 1);
+            _musicVolume = PlayerPrefs.GetFloat(GameUtilities.PlayerPrefs.musicVolume, 1);
         }
 
         public void PlayMusic(AudioClip _music)

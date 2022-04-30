@@ -19,8 +19,8 @@ namespace MC.Core
         {
             public static string isSFXMuted = "isSFXMuted";
             public static string isMusicMuted = "isMusicMuted";
-            public static string SFXVolume = "sfxVolume";
-            public static string MusicVolume = "musicVolume";
+            public static string sfxVolume = "sfxVolume";
+            public static string musicVolume = "musicVolume";
         }
     }
 }
