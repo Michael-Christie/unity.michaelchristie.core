@@ -102,17 +102,5 @@ namespace MC.Core
             musicSource.clip = _music;
             musicSource.Play();
         }
-
-        public static float ConvertFloatToDB(float _value)
-        {
-            if (_value == 0)
-                return -144.0f;
-            return 20 * Mathf.Log10(_value);
-        }
-
-        public static float ConvertDBToFloat(float _value)
-        {
-            return Mathf.Pow(10.0f, _value/20.0f);
-        }
     }
 }
