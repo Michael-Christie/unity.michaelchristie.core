@@ -20,7 +20,7 @@ namespace MC.Core
         {
             get
             {
-                return _isSFXMuted;
+                return _isSFXMuted || SFXVolume == 0;
             }
             private set
             {
@@ -36,7 +36,7 @@ namespace MC.Core
         {
             get
             {
-                return _isMusicMuted;
+                return _isMusicMuted || MusicVolume == 0;
             }
             private set
             {

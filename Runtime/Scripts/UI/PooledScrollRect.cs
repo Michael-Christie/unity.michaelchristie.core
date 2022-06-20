@@ -1,9 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScrollRect))]
+[Flags]
+public enum ScrollDirection
+{
+    Up = 1, 
+    Left = 2,
+    Down = 4, 
+    Right = 8
+}
+
+[RequireComponent(typeof(ScrollRect), typeof(UIFrustrumCulling))]
 public class PooledScrollRect : MonoBehaviour
 {
     [SerializeField] private ScrollRect scrollRect;
@@ -16,7 +26,7 @@ public class PooledScrollRect : MonoBehaviour
 
     private Vector2 cardSize;
 
-    [SerializeField] private bool isJustShowHide;
+    [SerializeField] private ScrollDirection scrollDirection;
 
     //
     private void Start()
@@ -25,37 +35,20 @@ public class PooledScrollRect : MonoBehaviour
 
         scrollRect.onValueChanged.AddListener(OnScrollRectUpdate);
 
-        cardSize = new Vector2(pooledCards[0].rectTransform.rect.width, pooledCards[0].rectTransform.rect.height);
+        cardSize = new Vector2(pooledCards[0].rectTransform.rect.width * (scrollDirection.HasFlag(ScrollDirection.Left) ? -1 : 1), 
+                                pooledCards[0].rectTransform.rect.height * (scrollDirection.HasFlag(ScrollDirection.Down) ? -1 : 1));
+
+        Initalize();
     }
 
     private void OnScrollRectUpdate(Vector2 _value)
     {
-        //Go through each card and see if its still visible
-        for (int i = 0; i < pooledCards.Length; i++)
-        {
-            if (pooledCards[i].IsActive || isJustShowHide)
-            {
-                pooledCards[i].gameObject.SetActive(IsCardVisible(pooledCards[i].rectTransform));
-            }
-        }
-
-        if (isJustShowHide)
-        {
-            return;
-        }
-
-        //See if we should spawn a new card
-
+        CheckCards();
     }
 
     [ContextMenu("Initalize")]
     private void Initalize()
     {
-        if (isJustShowHide)
-        {
-            return;
-        }
-
         PooledCardBase _baseCard;
 
         for (int i = 0; i < elementSize.x; i++)
@@ -64,14 +57,32 @@ public class PooledScrollRect : MonoBehaviour
             {
                 _baseCard = GetNextAvalibleCard();
 
-                _baseCard.transform.localPosition = new Vector2(i * cardSize.x, j * cardSize.y) + (cardSize * 0.5f); //This is good for going left to right but struggles with other directions which I need to flesh it out in.
+                if (_baseCard == null)
+                {
+                    continue;
+                }
+
+                Debug.Log(GetCardPosition(i, j));
+
+                _baseCard.transform.localPosition = GetCardPosition(i, j); //This is good for going left to right but struggles with other directions which I need to flesh it out in.
+
+                Debug.Log(_baseCard.transform.localPosition);
 
                 _baseCard.gameObject.SetActive(true);
             }
         }
+    }
 
-        //I think I need to like work out positions based on the rect size and not based on world space?
-        //so maybe look back at gameDevGuides to making UI elements
+    private Vector2 GetCardPosition(int _xPos, int _yPos)
+    {
+        ///TODO: This needs reformatting to be nicer to look at and read, as well as hopefuly getting ride of the second new Vector2.
+        return new Vector2(_xPos * cardSize.x, _yPos * cardSize.y) 
+            + new Vector2(cardSize.x * (!scrollDirection.HasFlag(ScrollDirection.Left) && !scrollDirection.HasFlag(ScrollDirection.Right) ? 0 : 0.5f), cardSize.y * (!scrollDirection.HasFlag(ScrollDirection.Up) && !scrollDirection.HasFlag(ScrollDirection.Down) ? 0 : 0.5f));
+    }
+
+    private void CheckCards()
+    {
+
     }
 
     private PooledCardBase GetNextAvalibleCard()
@@ -89,43 +100,4 @@ public class PooledScrollRect : MonoBehaviour
         return null;
     }
 
-    /// <summary>
-    /// Returns if the card is currently in the viewport.
-    /// </summary>
-    /// <param name="_card"></param>
-    /// <returns></returns>
-    private bool IsCardVisible(RectTransform _card)
-    {
-        Rect _cardRect = _card.RectRelativeTo(scrollRect.viewport);
-
-        return scrollRect.viewport.rect.Overlaps(_cardRect);
-    }
-}
-
-public static class ScrollRectExtentions
-{
-    public static Matrix4x4 TransformTo(this Transform _from, Transform _to)
-    {
-        return _to.worldToLocalMatrix * _from.localToWorldMatrix;
-    }
-
-    public static Rect RectRelativeTo(this RectTransform _transform, Transform _to)
-    {
-        Matrix4x4 _matrix = _transform.TransformTo(_to);
-
-        Rect _rect = _transform.rect;
-
-        Vector3 _p1 = new Vector2(_rect.xMin, _rect.yMin);
-        Vector3 _p2 = new Vector2(_rect.xMax, _rect.yMax);
-
-        _p1 = _matrix.MultiplyPoint(_p1);
-        _p2 = _matrix.MultiplyPoint(_p2);
-
-        _rect.xMin = _p1.x;
-        _rect.yMin = _p1.y;
-        _rect.xMax = _p2.x;
-        _rect.yMax = _p2.y;
-
-        return _rect;
-    }
 }
