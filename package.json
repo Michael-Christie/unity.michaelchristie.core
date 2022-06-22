@@ -1,13 +1,11 @@
 {
   "name": "unity.michaelchristie.core",
   "displayName": "Core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "unity": "2019.1",
   "author": "Michael Christie",
   "description": "Core Package stuff for baseplate use.",
-  "dependencies": {
-    "com.unity.textmeshpro": "3.0.6"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/Michael-Christie/unity.michaelchristie.core"
