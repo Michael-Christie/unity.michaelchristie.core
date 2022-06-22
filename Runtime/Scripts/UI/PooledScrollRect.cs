@@ -56,6 +56,10 @@ public class PooledScrollRect : MonoBehaviour
         Initalize();
     }
 
+    /// <summary>
+    /// The scroll rect callback
+    /// </summary>
+    /// <param name="_value"></param>
     private void OnScrollRectUpdate(Vector2 _value)
     {
         if ((_value - lastKnowPos).magnitude != 0)
@@ -85,13 +89,15 @@ public class PooledScrollRect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// On Card Remove callback from UIFrustrumCulling. Indicates when a card has been removed
+    /// </summary>
+    /// <param name="_index"></param>
     private void OnCardRemove(int _index)
     {
         Vector2Int _cardPos = IndexToCardPos(_index);
 
-        Debug.Log($"Removed Card {_index} at pos {_cardPos}");
-
-        //Update the min/max
+        //Update the min/max values so we know what index to change
         if(minIndex.x == _cardPos.x && userInput.HasFlag(ScrollDirection.Right))
         {
             minIndex.x++;
@@ -111,7 +117,9 @@ public class PooledScrollRect : MonoBehaviour
         }
     }
 
-    [ContextMenu("Initalize")]
+    /// <summary>
+    /// Initalize the scroll rect with the cards for its current position
+    /// </summary>
     private void Initalize()
     {
         lastKnowPos = scrollRect.normalizedPosition;
@@ -125,25 +133,33 @@ public class PooledScrollRect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Get the position of the card
+    /// </summary>
+    /// <param name="_xPos"></param>
+    /// <param name="_yPos"></param>
+    /// <returns>UI space position</returns>
     private Vector2 GetCardPosition(int _xPos, int _yPos)
-    {
-        ///TODO: This needs reformatting to be nicer to look at and read, as well as hopefuly getting ride of the second new Vector2.
-        return new Vector2(_xPos * cardSize.x, _yPos * cardSize.y) 
-            + new Vector2(cardSize.x * (!scrollDirection.HasFlag(ScrollDirection.Left) && !scrollDirection.HasFlag(ScrollDirection.Right) ? 0 : 0.5f), cardSize.y * (!scrollDirection.HasFlag(ScrollDirection.Up) && !scrollDirection.HasFlag(ScrollDirection.Down) ? 0 : 0.5f));
+    { 
+        return new Vector2(_xPos * cardSize.x + cardSize.x * (!scrollDirection.HasFlag(ScrollDirection.Left) && !scrollDirection.HasFlag(ScrollDirection.Right) ? 0 : 0.5f),
+                            _yPos * cardSize.y + cardSize.y * (!scrollDirection.HasFlag(ScrollDirection.Up) && !scrollDirection.HasFlag(ScrollDirection.Down) ? 0 : 0.5f));
     }
 
+    /// <summary>
+    /// Check the cards to see if a new card can be spawned
+    /// </summary>
     private void CheckCards()
     {
         //based upon the moveDirection
         //try and spawn a card in that direction...
-        if (userInput.HasFlag(ScrollDirection.Down))
+        if (userInput.HasFlag(ScrollDirection.Down) && maxIndex.y + 1 < elementSize.y)
         {
             for(int i = 0; i < elementSize.x; i++)
             {
                 AddCard(maxIndex.x + i, maxIndex.y + 1);
             }
         }
-        else if (userInput.HasFlag(ScrollDirection.Up))
+        else if (userInput.HasFlag(ScrollDirection.Up) && minIndex.y - 1 >= 0)
         {
             for (int i = 0; i < elementSize.x; i++)
             {
@@ -151,14 +167,14 @@ public class PooledScrollRect : MonoBehaviour
             }
         }
 
-        if (userInput.HasFlag(ScrollDirection.Right))
+        if (userInput.HasFlag(ScrollDirection.Right) && maxIndex.x + 1 < elementSize.x)
         {
             for (int i = 0; i < elementSize.y; i++)
             {
                 AddCard(maxIndex.x + 1, maxIndex.y + i);
             }
         }
-        else if (userInput.HasFlag(ScrollDirection.Left))
+        else if (userInput.HasFlag(ScrollDirection.Left) && minIndex.x - 1 >= 0)
         {
             for (int i = 0; i < elementSize.y; i++)
             {
@@ -167,6 +183,11 @@ public class PooledScrollRect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Add a card in its X and Y pos
+    /// </summary>
+    /// <param name="_xPos"></param>
+    /// <param name="_yPos"></param>
     private void AddCard(int _xPos, int _yPos)
     {
         cachedBaseCard = GetNextAvalibleCard();
@@ -176,7 +197,7 @@ public class PooledScrollRect : MonoBehaviour
             return;
         }
 
-        cachedBaseCard.transform.localPosition = GetCardPosition(_xPos, _yPos); //This is good for going left to right but struggles with other directions which I need to flesh it out in.
+        cachedBaseCard.transform.localPosition = GetCardPosition(_xPos, _yPos);
 
         if (!culler.IsCardVisible(cachedBaseCard.rectTransform))
         {
@@ -190,6 +211,11 @@ public class PooledScrollRect : MonoBehaviour
         cachedBaseCard.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Check to see if the min/max values should change based on this card pos
+    /// </summary>
+    /// <param name="_xPos"></param>
+    /// <param name="_yPos"></param>
     private void CheckIndexIntoMinMax(int _xPos, int _yPos)
     {
         if(minIndex.x == -1 || minIndex.x > _xPos)
@@ -213,6 +239,10 @@ public class PooledScrollRect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Return the next avaliable pooled card
+    /// </summary>
+    /// <returns></returns>
     private PooledCardBase GetNextAvalibleCard()
     {
         for (int i = 0; i < culler.PooledCards.Length; i++)
@@ -230,16 +260,32 @@ public class PooledScrollRect : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Convert 1D index to 2D
+    /// </summary>
+    /// <param name="_index"></param>
+    /// <returns></returns>
     private Vector2Int IndexToCardPos(int _index)
     {
         return new Vector2Int(_index % elementSize.x, _index / elementSize.x);
     }
 
+    /// <summary>
+    /// Convert 2D index to 1D
+    /// </summary>
+    /// <param name="_pos"></param>
+    /// <returns></returns>
     private int CardPosToIndex(Vector2Int _pos)
     {
         return CardPosToIndex(_pos.x, _pos.y);
     }
 
+    /// <summary>
+    /// Convert 2D index to 1D
+    /// </summary>
+    /// <param name="_xPos"></param>
+    /// <param name="_yPos"></param>
+    /// <returns></returns>
     private int CardPosToIndex(int _xPos, int _yPos)
     {
         return _xPos * elementSize.y + _yPos;
