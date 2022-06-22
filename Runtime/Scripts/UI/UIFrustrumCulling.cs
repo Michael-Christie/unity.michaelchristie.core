@@ -11,9 +11,13 @@ public class UIFrustrumCulling : MonoBehaviour
 
     [SerializeField] private PooledCardBase[] pooledCards;
 
+    public PooledCardBase[] PooledCards { get { return pooledCards; } }
+
     private RectTransform thisRect;
 
     [SerializeField] private bool canShow;
+
+    public Action<int> OnCardRemoved;
 
     //
     private void Awake()
@@ -37,6 +41,10 @@ public class UIFrustrumCulling : MonoBehaviour
         {
             if (pooledCards[i].IsActive || canShow)
             {
+                if (!IsCardVisible(pooledCards[i].rectTransform))
+                {
+                    OnCardRemoved?.Invoke(pooledCards[i].Index);
+                }
                 pooledCards[i].gameObject.SetActive(IsCardVisible(pooledCards[i].rectTransform));
             }
         }
@@ -47,7 +55,7 @@ public class UIFrustrumCulling : MonoBehaviour
     /// </summary>
     /// <param name="_card"></param>
     /// <returns></returns>
-    private bool IsCardVisible(RectTransform _card)
+    public bool IsCardVisible(RectTransform _card)
     {
         Rect _cardRect = _card.RectRelativeTo(scrollRect.viewport);
 
