@@ -6,6 +6,8 @@ namespace MC.Core
 {
     public class GameUtilities : MonoBehaviour
     {
+        public const string CoreCallbackPath = "CoreCallbacks";
+
         public static class WaitTimers
         {
             public static WaitForEndOfFrame waitForEndFrame = new WaitForEndOfFrame();

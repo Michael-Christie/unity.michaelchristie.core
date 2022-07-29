@@ -14,8 +14,6 @@ namespace MC.Core
 
         [SerializeField] private SceneCollection[] sceneCollections;
 
-        private List<BaseSceneLoader> baseSceneControllers = new List<BaseSceneLoader>();
-
         private int currentCollection = 0;
 
         private List<AsyncOperation> currentAsynList = new List<AsyncOperation>();
@@ -161,37 +159,18 @@ namespace MC.Core
 
         private void OnSceneReady()
         {
-            for (int i = 0; i < baseSceneControllers.Count; i++)
-            {
-                baseSceneControllers[i]?.OnSceneReady();
-            }
+            CoreCallback.Instance.onSceneReady?.Invoke();
         }
 
         private void OnSceneStart()
         {
-            for (int i = 0; i < baseSceneControllers.Count; i++)
-            {
-                baseSceneControllers[i]?.OnSceneStart();
-            }
+            CoreCallback.Instance.onSceneStart?.Invoke();
         }
 
         private void OnSceneChange()
         {
-            for (int i = 0; i < baseSceneControllers.Count; i++)
-            {
-                baseSceneControllers[i]?.OnSceneChange();
-            }
+            CoreCallback.Instance.onSceneChange?.Invoke();
         }
         #endregion
-
-        public void AddActiveBaseSceneLoader(BaseSceneLoader _sceneLoader)
-        {
-            baseSceneControllers.Add(_sceneLoader);
-        }
-
-        public void RemoveBaseSceneLoader(BaseSceneLoader _sceneLoader)
-        {
-            baseSceneControllers.Remove(_sceneLoader);
-        }
     }
 }

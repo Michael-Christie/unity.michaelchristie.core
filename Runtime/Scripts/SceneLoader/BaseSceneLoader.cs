@@ -9,12 +9,16 @@ namespace MC.Core
         private void Awake()
         {
             //Assign this to the boot loader
-            CoreBootLoader.Instance.AddActiveBaseSceneLoader(this);
+            CoreCallback.Instance.onSceneReady += OnSceneReady;
+            CoreCallback.Instance.onSceneStart += OnSceneStart;
+            CoreCallback.Instance.onSceneChange += OnSceneChange;
         }
 
         private void OnDestroy()
         {
-            CoreBootLoader.Instance.RemoveBaseSceneLoader(this);
+            CoreCallback.Instance.onSceneReady -= OnSceneReady;
+            CoreCallback.Instance.onSceneStart -= OnSceneStart;
+            CoreCallback.Instance.onSceneChange -= OnSceneChange;
         }
 
         /// <summary>
