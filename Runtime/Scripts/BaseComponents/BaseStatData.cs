@@ -7,7 +7,7 @@ public class BaseValueData
 {
     public virtual int valueIndex { get; }
 
-    [XmlIgnoreAttribute] public virtual string displayName { get; }
+    [XmlIgnoreAttribute] public virtual string displayName { get; private set; }
 
     public virtual float value { get; set; }
 }
