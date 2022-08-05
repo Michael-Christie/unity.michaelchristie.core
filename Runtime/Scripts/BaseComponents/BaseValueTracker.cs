@@ -11,7 +11,7 @@ public class BaseValueTracker : MonoBehaviour
     {
         if (data.Length - 1 > _statID)
         {
-            data[_statID].value += _value;
+            data[_statID].Value += _value;
             return;
         }
 
@@ -22,7 +22,7 @@ public class BaseValueTracker : MonoBehaviour
     {
         if (data.Length - 1 > _statID)
         {
-            data[_statID].value = _value;
+            data[_statID].Value = _value;
             return;
         }
 
@@ -33,7 +33,7 @@ public class BaseValueTracker : MonoBehaviour
     {
         if (data.Length - 1 > _statID)
         {
-            data[_statID].value = Mathf.Max(data[_statID].value, _value);
+            data[_statID].Value = Mathf.Max(data[_statID].Value, _value);
             return;
         }
 
@@ -49,7 +49,7 @@ public class BaseValueTracker : MonoBehaviour
     {
         if (data.Length - 1 > _statID)
         {
-            return data[_statID].value;
+            return data[_statID].Value;
         }
 
         return -1;

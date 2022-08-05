@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class BaseValueData
 {
-    public virtual int valueIndex { get; }
+    public virtual int ValueIndex { get; }
 
-    [XmlIgnoreAttribute] public virtual string displayName { get; private set; }
+    [XmlIgnoreAttribute] public virtual string displayName { get; set; }
 
-    public virtual float value { get; set; }
+    public virtual float Value { get; set; }
 }
