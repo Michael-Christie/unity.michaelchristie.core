@@ -35,6 +35,9 @@ public class PooledScrollRect : MonoBehaviour
 
     private PooledCardBase cachedBaseCard;
 
+    [SerializeField] private MC.Core.GameUtilities.Sides margin;
+    [SerializeField] private MC.Core.GameUtilities.Sides padding;
+
     //
     private void Awake()
     {
@@ -141,8 +144,8 @@ public class PooledScrollRect : MonoBehaviour
     /// <returns>UI space position</returns>
     private Vector2 GetCardPosition(int _xPos, int _yPos)
     { 
-        return new Vector2(_xPos * cardSize.x + cardSize.x * (!scrollDirection.HasFlag(ScrollDirection.Left) && !scrollDirection.HasFlag(ScrollDirection.Right) ? 0 : 0.5f),
-                            _yPos * cardSize.y + cardSize.y * (!scrollDirection.HasFlag(ScrollDirection.Up) && !scrollDirection.HasFlag(ScrollDirection.Down) ? 0 : 0.5f));
+        return new Vector2((margin.horizontal * (scrollDirection.Equals(ScrollDirection.Left) ? -1 : 1)) + _xPos * cardSize.x + cardSize.x * (!scrollDirection.HasFlag(ScrollDirection.Left) && !scrollDirection.HasFlag(ScrollDirection.Right) ? 0 : 0.5f) + (padding.horizontal * (scrollDirection.Equals(ScrollDirection.Left) ? -1 : 1) * _xPos),
+                            (margin.vertical * (scrollDirection.Equals(ScrollDirection.Left) ? -1 : 11)) + _yPos * cardSize.y + cardSize.y * (!scrollDirection.HasFlag(ScrollDirection.Up) && !scrollDirection.HasFlag(ScrollDirection.Down) ? 0 : 0.5f) + (padding.vertical * (scrollDirection.Equals(ScrollDirection.Down) ? -1 : 1) * _yPos));
     }
 
     /// <summary>

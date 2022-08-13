@@ -24,5 +24,12 @@ namespace MC.Core
             public static string sfxVolume = "sfxVolume";
             public static string musicVolume = "musicVolume";
         }
+
+        [System.Serializable]
+        public class Sides
+        {
+            public float horizontal;
+            public float vertical;
+        }
     }
 }

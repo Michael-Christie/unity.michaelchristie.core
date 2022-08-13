@@ -31,6 +31,8 @@ public class PooledCardBase : MonoBehaviour
     public virtual void UpdateCard(int _index)
     {
         Index = _index;
+
+        UpdateContent();
     }
 
     public virtual void UpdateContent()
