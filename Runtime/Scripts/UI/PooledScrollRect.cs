@@ -250,8 +250,6 @@ public class PooledScrollRect : MonoBehaviour
     {
         for (int i = 0; i < culler.PooledCards.Length; i++)
         {
-            Debug.Log(culler.PooledCards[i].IsActive);
-
             if (!culler.PooledCards[i].IsActive)
             {
                 return culler.PooledCards[i];

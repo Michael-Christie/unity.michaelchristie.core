@@ -112,4 +112,13 @@ public class MenuManager : MonoBehaviour
 
         menuStack.Push(_newMenu);
     }
+
+    public MenuBase GetMenuAtIndex(int _index)
+    {
+        if (_index >= 0 && _index < allMenus.Length)
+        {
+            return allMenus[_index];
+        }
+        return null;
+    }
 }
