@@ -20,9 +20,6 @@ namespace MC.Core
 
         private float totalProgress = 0;
 
-        public Action<bool> ShowLoadingScene;
-        public Action<float> UpdateLoadPercentage;
-
         //
         #region Game Start Functions
         private void Awake()
@@ -56,7 +53,7 @@ namespace MC.Core
 
                     totalProgress /= currentAsynList.Count;
 
-                    UpdateLoadPercentage?.Invoke(totalProgress);
+                    CoreCallback.Instance.updateLoadPercentage?.Invoke(totalProgress);
 
                     yield return GameUtilities.WaitTimers.waitForEndFrame;
                 }
@@ -64,7 +61,7 @@ namespace MC.Core
 
             yield return GameUtilities.WaitTimers.waitForPointFive;
 
-            ShowLoadingScene?.Invoke(false);
+            CoreCallback.Instance.showLoadingScene?.Invoke(false, 0);
             yield return GameUtilities.WaitTimers.waitForPointFive;
             currentAsynList.Clear();
 
@@ -76,7 +73,7 @@ namespace MC.Core
         #region Base Loading Functions
         public void ChangeSceneCollection(int _sceneCollection)
         {
-            UpdateLoadPercentage?.Invoke(0);
+            CoreCallback.Instance.updateLoadPercentage?.Invoke(0);
 
             StartCoroutine(SwitchSceneCollection(_sceneCollection));
         }
@@ -84,8 +81,7 @@ namespace MC.Core
         private IEnumerator SwitchSceneCollection(int _sceneCollection)
         {
             //Hide the current Scene
-
-            ShowLoadingScene?.Invoke(true);
+            CoreCallback.Instance.showLoadingScene?.Invoke(true, _sceneCollection);
             yield return GameUtilities.WaitTimers.waitForPointFive;
 
             Application.backgroundLoadingPriority = ThreadPriority.High;
@@ -125,7 +121,7 @@ namespace MC.Core
 
                     totalProgress /= currentAsynList.Count;
 
-                    UpdateLoadPercentage?.Invoke(totalProgress);
+                    CoreCallback.Instance.updateLoadPercentage?.Invoke(totalProgress);
 
                     yield return GameUtilities.WaitTimers.waitForEndFrame;
                 }
@@ -141,7 +137,7 @@ namespace MC.Core
 
             Application.backgroundLoadingPriority = ThreadPriority.BelowNormal;
 
-            ShowLoadingScene?.Invoke(false);
+            CoreCallback.Instance.showLoadingScene?.Invoke(false, _sceneCollection);
             yield return GameUtilities.WaitTimers.waitForPointFive;
 
             currentAsynList.Clear();

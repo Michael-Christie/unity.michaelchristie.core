@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace MC.Core
 {
-
-    [CreateAssetMenu(fileName = "CoreCallbacks", menuName = "Core/Callbacks")]
     public class CoreCallbacks : ScriptableObject
     {
         public Action onSceneReady;
         public Action onSceneStart;
         public Action onSceneChange;
+        public Action<bool, int> showLoadingScene;
+        public Action<float> updateLoadPercentage;
     }
 
     public static class CoreCallback
