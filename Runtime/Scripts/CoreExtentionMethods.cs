@@ -3,71 +3,70 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MC.Core
+public static class CoreExtentionMethods
 {
-    public static class CoreExtentionMethods
+    /// <summary>
+    /// Is T Equal to all of the critera passed in
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="_component"></param>
+    /// <param name="_params"></param>
+    /// <returns></returns>
+    public static bool Equals<T>(this T _component, params T[] _criteria)
     {
-        public static bool Contains(this SceneCollection _collection, int _scene)
+        for (int i = 0; i < _criteria.Length; i++)
         {
-            for (int i = 0; i < _collection.scenes.Length; i++)
+            if (!_component.Equals(_criteria[i]))
             {
-                if (_collection.scenes[i] == _scene)
-                {
-                    return true;
-                }
+                return false;
             }
-            return false;
         }
+        return true;
+    }
 
-        /// <summary>
-        /// Is T Equal to all of the critera passed in
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="_component"></param>
-        /// <param name="_params"></param>
-        /// <returns></returns>
-        public static bool Equals<T>(this T _component, params T[] _criteria)
+    /// <summary>
+    /// Does T equal one of the criteria passed to it
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="_component"></param>
+    /// <param name="_params"></param>
+    /// <returns></returns>
+    public static bool Contains<T>(this T _component, params T[] _criteria)
+    {
+        for (int i = 0; i < _criteria.Length; i++)
         {
-            for (int i = 0; i < _criteria.Length; i++)
+            if (_component.Equals(_criteria[i]))
             {
-                if (!_component.Equals(_criteria[i]))
-                {
-                    return false;
-                }
+                return true;
             }
-            return true;
         }
 
-        /// <summary>
-        /// Does T equal one of the criteria passed to it
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="_component"></param>
-        /// <param name="_params"></param>
-        /// <returns></returns>
-        public static bool Contains<T>(this T _component, params T[] _criteria)
+        return false;
+    }
+
+    public static bool CompareTags(this Component _component, params string[] _criteria)
+    {
+        for(int i = 0; i < _criteria.Length; i++)
         {
-            for (int i = 0; i < _criteria.Length; i++)
+            if (_component.CompareTag(_criteria[i]))
             {
-                if (_component.Equals(_criteria[i]))
-                {
-                    return true;
-                }
+                return true;
             }
-
-            return false;
         }
 
-        public static float ConvertFloatToDecibels(this float _value)
-        {
-            if (_value == 0)
-                return -144.0f;
-            return 20 * Mathf.Log10(_value);
-        }
+        return false;
+    }
 
-        public static float ConvertDecibelsToFloat(this float _value)
-        {
-            return Mathf.Pow(10.0f, _value / 20.0f);
-        }
+    public static float ConvertFloatToDecibels(this float _value)
+    {
+        if (_value == 0)
+            return -144.0f;
+        return 20 * Mathf.Log10(_value);
+    }
+
+    public static float ConvertDecibelsToFloat(this float _value)
+    {
+        return Mathf.Pow(10.0f, _value / 20.0f);
     }
 }
+

@@ -18,7 +18,7 @@ public class MenuManager : MonoBehaviour
     {
         get
         {
-            return menuStack.Peek() ?? null;
+            return menuStack?.Peek() ?? null;
         }
     }
 
@@ -36,7 +36,8 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)
+            && menuStack.Count > 0)
         {
             CurrentMenu?.OnEscHit();
         }

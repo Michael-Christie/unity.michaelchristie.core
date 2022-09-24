@@ -169,4 +169,19 @@ namespace MC.Core
         }
         #endregion
     }
+
+    public static class BootLoaderExtention
+    {
+        public static bool Contains(this SceneCollection _collection, int _scene)
+        {
+            for (int i = 0; i < _collection.scenes.Length; i++)
+            {
+                if (_collection.scenes[i] == _scene)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }
