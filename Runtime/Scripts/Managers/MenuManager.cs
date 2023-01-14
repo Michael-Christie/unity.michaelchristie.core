@@ -122,4 +122,25 @@ public class MenuManager : MonoBehaviour
         }
         return null;
     }
+
+    public void OverlayMenu(int _index)
+    {
+        MenuBase _newMenu = allMenus[_index];
+
+        _newMenu.Show(null);
+
+        menuStack.Push(_newMenu);
+    }
+
+    public void HideOverlayMenu(int _index)
+    {
+        if (menuStack.Count > 0)
+        {
+
+            if (menuStack.Peek() == GetMenuAtIndex(_index))
+            {
+                menuStack.Pop().Hide(null);
+            }
+        }
+    }
 }
