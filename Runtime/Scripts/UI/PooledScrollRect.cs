@@ -272,4 +272,26 @@ public class PooledScrollRect : MonoBehaviour
     {
         return _xPos * elementSize.y + _yPos;
     }
+
+    public void SetSize(int _width, int _heigh, bool _setContentWidth, bool _setContentHeight)
+    {
+        elementSize = new Vector2Int(_width, _heigh);
+
+        if(_setContentHeight || _setContentWidth)
+        {
+            Vector2 _size = scrollRect.content.sizeDelta;
+
+            if (_setContentHeight)
+            {
+                _size.y = Mathf.Abs(margin.vertical + _heigh * cardSize.y + cardSize.y * 0.5f + (padding.vertical * _heigh));
+            }
+
+            if (_setContentWidth)
+            {
+                _size.x = Mathf.Abs(margin.horizontal + _width * cardSize.x + cardSize.x * 0.5f + (padding.horizontal * _width));
+            }
+
+            scrollRect.content.sizeDelta = _size;
+        }
+    }
 }
