@@ -193,7 +193,7 @@ public class PooledScrollRect : MonoBehaviour
     /// <param name="_yPos"></param>
     private void AddCard(int _xPos, int _yPos)
     {
-        cachedBaseCard = GetNextAvalibleCard();
+        cachedBaseCard = culler.GetNextAvalibleCard();
 
         if (cachedBaseCard == null)
         {
@@ -240,25 +240,6 @@ public class PooledScrollRect : MonoBehaviour
         {
             maxIndex.y = _yPos;
         }
-    }
-
-    /// <summary>
-    /// Return the next avaliable pooled card
-    /// </summary>
-    /// <returns></returns>
-    private PooledCardBase GetNextAvalibleCard()
-    {
-        for (int i = 0; i < culler.PooledCards.Length; i++)
-        {
-            if (!culler.PooledCards[i].IsActive)
-            {
-                return culler.PooledCards[i];
-            }
-        }
-
-        Debug.Log("Not Enough cards were found.");
-
-        return null;
     }
 
     /// <summary>

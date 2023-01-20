@@ -19,6 +19,10 @@ public class UIFrustrumCulling : MonoBehaviour
 
     public Action<int> OnCardRemoved;
 
+    [SerializeField] private bool canSpawnCards;
+
+    [SerializeField] private PooledCardBase templateCard;
+
     //
     private void Awake()
     {
@@ -60,6 +64,37 @@ public class UIFrustrumCulling : MonoBehaviour
         Rect _cardRect = _card.RectRelativeTo(scrollRect.viewport);
 
         return scrollRect.viewport.rect.Overlaps(_cardRect);
+    }
+
+    /// <summary>
+    /// Return the next avaliable pooled card
+    /// </summary>
+    /// <returns></returns>
+    public PooledCardBase GetNextAvalibleCard()
+    {
+        for (int i = 0; i < pooledCards.Length; i++)
+        {
+            if (!pooledCards[i].IsActive)
+            {
+                return pooledCards[i];
+            }
+        }
+
+        if (canSpawnCards)
+        {
+            PooledCardBase _newCard = Instantiate(templateCard, templateCard.transform.parent);
+
+            Array.Resize(ref pooledCards, pooledCards.Length + 1);
+            pooledCards[pooledCards.Length - 1] = _newCard;
+
+            return _newCard;
+        }
+        else
+        {
+            Debug.Log("Not Enough cards were found.");
+
+            return null;
+        }
     }
 }
 
