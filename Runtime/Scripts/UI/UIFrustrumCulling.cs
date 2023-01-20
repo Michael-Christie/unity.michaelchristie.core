@@ -27,6 +27,16 @@ public class UIFrustrumCulling : MonoBehaviour
     private void Awake()
     {
         scrollRect = GetComponent<ScrollRect>();
+
+        if(pooledCards.Length == 0 && templateCard)
+        {
+            pooledCards = new PooledCardBase[10];
+
+            for(int i = 0; i < 10; i++)
+            {
+                pooledCards[i] = Instantiate(templateCard, templateCard.transform.parent);
+            }
+        }
     }
 
     private void Start()
