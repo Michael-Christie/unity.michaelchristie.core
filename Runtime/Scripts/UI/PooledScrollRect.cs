@@ -279,6 +279,11 @@ public class PooledScrollRect : MonoBehaviour
 
         if(_setContentHeight || _setContentWidth)
         {
+            if(scrollRect == null)
+            {
+                Awake();
+            }
+
             Vector2 _size = scrollRect.content.sizeDelta;
 
             if (_setContentHeight)
